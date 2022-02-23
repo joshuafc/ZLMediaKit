@@ -232,7 +232,7 @@ int main(int argc,char *argv[]) {
         //PlayerProxy构造函数前两个参数分别为应用名（app）,流id（streamId）
         //比如说应用为live，流id为0，那么直播地址为:
 
-        //hls地址 : http://127.0.0.1/live/0/hls.m3u8
+        //hls地址 : http://127.0.0.1/live/0.m3u8
         //http-flv地址 : http://127.0.0.1/live/0.flv
         //rtsp地址 : rtsp://127.0.0.1/live/0
         //rtmp地址 : rtmp://127.0.0.1/live/0
@@ -255,7 +255,7 @@ int main(int argc,char *argv[]) {
     DebugL << "\r\n"
               " PlayerProxy构造函数前两个参数分别为应用名（app）,流id（streamId）\n"
               " 比如说应用为live，流id为0，那么直播地址为:\n"
-              " hls地址 : http://127.0.0.1/live/0/hls.m3u8\n"
+              " hls地址 : http://127.0.0.1/live/0.m3u8\n"
               " http-flv地址 : http://127.0.0.1/live/0.flv\n"
               " rtsp地址 : rtsp://127.0.0.1/live/0\n"
               " rtmp地址 : rtmp://127.0.0.1/live/0";

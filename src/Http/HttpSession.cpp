@@ -194,6 +194,18 @@ bool HttpSession::checkLiveStream(const string &schema, const string  &url_suffi
         return false;
     }
 
+    if( !_emitPlayerDisConnectedHandle )
+    {
+        shared_ptr<SockInfo> sockInfo = dynamic_pointer_cast<SockInfo>(std::make_shared<SockInfoData>(this));
+        NoticeCenter::Instance().emitEvent(Broadcast::kBroadcastPlayerConnected, _mediaInfo, *sockInfo);
+
+        //此回调在子类析构时调用
+        auto mediaInfo = _mediaInfo;
+        _emitPlayerDisConnectedHandle.reset((void*)1, [mediaInfo, sockInfo](void*){
+            NoticeCenter::Instance().emitEvent(Broadcast::kBroadcastPlayerDisConnected, mediaInfo, *sockInfo);
+        });
+    }
+
     bool close_flag = !strcasecmp(_parser["Connection"].data(), "close");
     weak_ptr<HttpSession> weak_self = dynamic_pointer_cast<HttpSession>(shared_from_this());
 

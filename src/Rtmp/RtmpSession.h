@@ -103,6 +103,7 @@ private:
     RtmpMediaSourceImp::Ptr _push_src;
     std::shared_ptr<void> _push_src_ownership;
     RtmpMediaSource::RingType::RingReader::Ptr _ring_reader;
+    shared_ptr<void> _emitPlayerDisConnectedHandle;
 };
 
 /**

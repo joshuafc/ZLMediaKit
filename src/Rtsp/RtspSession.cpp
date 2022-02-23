@@ -335,6 +335,17 @@ void RtspSession::handleReq_RECORD(const Parser &parser){
 
 void RtspSession::emitOnPlay(){
     weak_ptr<RtspSession> weakSelf = dynamic_pointer_cast<RtspSession>(shared_from_this());
+    if( !_emitPlayerDisConnectedHandle )
+    {
+        MediaInfo _info = _media_info;
+        shared_ptr<SockInfo> sockInfo = dynamic_pointer_cast<SockInfo>(std::make_shared<SockInfoData>(this));
+        NoticeCenter::Instance().emitEvent(Broadcast::kBroadcastPlayerConnected, _info, *sockInfo);
+
+        //此回调在子类析构时调用
+        _emitPlayerDisConnectedHandle.reset((void*)1, [_info, sockInfo](void*){
+            NoticeCenter::Instance().emitEvent(Broadcast::kBroadcastPlayerDisConnected, _info, *sockInfo);
+        });
+    }
     //url鉴权回调
     auto onRes = [weakSelf](const string &err) {
         auto strongSelf = weakSelf.lock();

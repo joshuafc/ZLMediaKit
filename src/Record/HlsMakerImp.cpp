@@ -24,7 +24,10 @@ HlsMakerImp::HlsMakerImp(const string &m3u8_file,
                          float seg_duration,
                          uint32_t seg_number) : HlsMaker(seg_duration, seg_number) {
     _poller = EventPollerPool::Instance().getPoller();
-    _path_prefix = m3u8_file.substr(0, m3u8_file.rfind('/'));
+    _path_prefix = m3u8_file;
+    replace(_path_prefix, ".m3u8", "");
+    _stream_id = _path_prefix.substr( _path_prefix.rfind('/')+1);
+    _path_prefix = _path_prefix.substr( 0, _path_prefix.rfind('/'));
     _path_hls = m3u8_file;
     _params = params;
     _buf_size = bufSize;
@@ -69,7 +72,7 @@ string HlsMakerImp::onOpenSegment(uint64_t index) {
         auto strDate = getTimeStr("%Y-%m-%d");
         auto strHour = getTimeStr("%H");
         auto strTime = getTimeStr("%M-%S");
-        segment_name = StrPrinter << strDate + "/" + strHour + "/" + strTime << "_" << index << ".ts";
+        segment_name = _stream_id + "/" + (StrPrinter << strDate + "/" + strHour + "/" + strTime << "_" << index << ".ts");
         segment_path = _path_prefix + "/" + segment_name;
         if (isLive()) {
             _segment_file_paths.emplace(index, segment_path);

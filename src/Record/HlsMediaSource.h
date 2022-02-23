@@ -93,10 +93,10 @@ private:
 class HlsCookieData{
 public:
     typedef std::shared_ptr<HlsCookieData> Ptr;
-    HlsCookieData(const MediaInfo &info, const std::shared_ptr<SockInfo> &sock_info);
+    HlsCookieData(const MediaInfo &info, const std::shared_ptr<SockInfo> &sock_info, shared_ptr<void> emitPlayerDisConnectedHandle);
     ~HlsCookieData();
     void addByteUsage(size_t bytes);
-
+    shared_ptr<void> _emitPlayerDisConnectedHandle;
 private:
     void addReaderCount();
 

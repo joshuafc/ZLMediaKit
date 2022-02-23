@@ -105,6 +105,14 @@ extern const string kBroadcastStreamNoneReader;
 extern const string kBroadcastReloadConfig;
 #define BroadcastReloadConfigArgs void
 
+//新播放器接入(鉴权前调用)
+extern const string kBroadcastPlayerConnected;
+#define BroadcastPlayerConnectedArgs const MediaInfo &args, SockInfo &sender
+
+//播放器断开连接
+extern const string kBroadcastPlayerDisConnected;
+#define BroadcastPlayerDisConnectedArgs const MediaInfo &args, SockInfo &sender
+
 #define ReloadConfigTag  ((void *)(0xFF))
 #define RELOAD_KEY(arg,key)                              \
     do {                                                 \

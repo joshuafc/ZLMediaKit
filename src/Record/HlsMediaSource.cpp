@@ -12,10 +12,11 @@
 
 namespace mediakit{
 
-HlsCookieData::HlsCookieData(const MediaInfo &info, const std::shared_ptr<SockInfo> &sock_info) {
+HlsCookieData::HlsCookieData(const MediaInfo &info, const std::shared_ptr<SockInfo> &sock_info, shared_ptr<void> emitPlayerDisConnectedHandle) {
     _info = info;
     _sock_info = sock_info;
     _added = std::make_shared<bool>(false);
+    _emitPlayerDisConnectedHandle = emitPlayerDisConnectedHandle;
     addReaderCount();
 }
 

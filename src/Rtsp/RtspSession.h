@@ -216,6 +216,7 @@ private:
     //统计rtp并发送rtcp
     vector<RtcpContext::Ptr> _rtcp_context;
     bool _send_sr_rtcp[2] = {true, true};
+    shared_ptr<void> _emitPlayerDisConnectedHandle;
 };
 
 /**

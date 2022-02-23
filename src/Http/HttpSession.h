@@ -137,6 +137,7 @@ private:
     FMP4MediaSource::RingType::RingReader::Ptr _fmp4_reader;
     //处理content数据的callback
     function<bool (const char *data,size_t len) > _contentCallBack;
+    shared_ptr<void> _emitPlayerDisConnectedHandle;
 };
 
 

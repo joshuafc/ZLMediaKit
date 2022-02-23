@@ -66,6 +66,7 @@ private:
     string _params;
     string _path_hls;
     string _path_prefix;
+    string _stream_id;
     RecordInfo _info;
     std::shared_ptr<FILE> _file;
     std::shared_ptr<char> _file_buf;
