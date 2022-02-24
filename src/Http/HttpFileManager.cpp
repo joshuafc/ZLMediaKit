@@ -216,7 +216,7 @@ static void canAccessPath(TcpSession &sender, const Parser &parser, const MediaI
     //获取用户唯一id
     auto uid = parser.Params();
     auto path = parser.Url();
-
+    string realClientIP = getClientIP(parser);
     //先根据http头中的cookie字段获取cookie
     HttpServerCookie::Ptr cookie = HttpCookieManager::Instance().getCookie(kCookieName, parser.getHeader());
     //如果不是从http头中找到的cookie,我们让http客户端设置下cookie
@@ -298,6 +298,10 @@ static void canAccessPath(TcpSession &sender, const Parser &parser, const MediaI
         //是hls的播放鉴权,拦截之;
         MediaInfo _info(mediaInfo);
         shared_ptr<SockInfo> sockInfo = dynamic_pointer_cast<SockInfo>(std::make_shared<SockInfoData>(&sender));
+        if( !realClientIP.empty() ){
+            dynamic_pointer_cast<SockInfoData>(sockInfo)->_peer_ip = realClientIP;
+            dynamic_pointer_cast<SockInfoData>(sockInfo)->_peer_port = 0;
+        }
         NoticeCenter::Instance().emitEvent(Broadcast::kBroadcastPlayerConnected, _info, *sockInfo);
 
         //此回调在子类析构时调用

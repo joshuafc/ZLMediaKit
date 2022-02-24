@@ -27,6 +27,8 @@ using namespace toolkit;
 
 namespace mediakit {
 
+std::string getClientIP(const Parser& parser);
+
 class HttpSession: public TcpSession,
                    public FlvMuxer,
                    public HttpRequestSplitter,

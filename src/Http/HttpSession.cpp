@@ -175,6 +175,18 @@ bool HttpSession::checkWebSocket(){
     return true;
 }
 
+std::string getClientIP(const Parser& parser){
+    auto iter = parser.getHeader().find("X-Forwarded-For");
+    if(iter == parser.getHeader().end())
+        return "";
+    string forwardStr = iter->second;
+    auto pos = forwardStr.find_first_of(',');
+    if( pos != string::npos )
+        return forwardStr.substr(0, pos);
+    else
+        return forwardStr;
+}
+
 bool HttpSession::checkLiveStream(const string &schema, const string  &url_suffix, const function<void(const MediaSource::Ptr &src)> &cb){
     auto pos = strcasestr(_parser.Url().data(), url_suffix.data());
     if (!pos || pos + url_suffix.size() != 1 + &_parser.Url().back()) {
@@ -197,6 +209,11 @@ bool HttpSession::checkLiveStream(const string &schema, const string  &url_suffi
     if( !_emitPlayerDisConnectedHandle )
     {
         shared_ptr<SockInfo> sockInfo = dynamic_pointer_cast<SockInfo>(std::make_shared<SockInfoData>(this));
+        if( !getClientIP(_parser).empty() ){
+            dynamic_pointer_cast<SockInfoData>(sockInfo)->_peer_ip = getClientIP(_parser);
+            dynamic_pointer_cast<SockInfoData>(sockInfo)->_peer_port = 0;
+        }
+
         NoticeCenter::Instance().emitEvent(Broadcast::kBroadcastPlayerConnected, _mediaInfo, *sockInfo);
 
         //此回调在子类析构时调用
